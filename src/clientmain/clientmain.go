@@ -1,59 +1,39 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
-	"log"
 	"net"
-	"os/exec"
-	"strings"
+	"pathanalysis"
+	"protocol"
 )
 
 func main() {
+	var ServIp, ServPort, TarPath, IgnoreList, IncludeList string
+	flag.StringVar(&ServIp, "ip", "./", "server ip")
+	flag.StringVar(&ServPort, "port", "./", "server port")
+	flag.StringVar(&TarPath, "path", "./", "absolute file path")
+	flag.StringVar(&IgnoreList, "ignore", "./", "ignore surfix files: lua;cpp;hpp")
+	flag.StringVar(&IncludeList, "include", "./", "include surfix files: lua;cpp")
+	flag.Parse()
+
 	servAddr := fmt.Sprintf("%s:%s", ServIp, ServPort)
 	conn, err := net.Dial("tcp", servAddr)
 	if err != nil {
-		log.Printf("failed to connect to server: %s\n", servAddr)
-		//return
+		fmt.Printf("failed to connect to server: %s\n", servAddr)
+		return
 	}
 	defer conn.Close()
 
 	fmt.Printf("connected to server: %s!\n", servAddr)
 
-	cmd := exec.Command("svn", "status", SvnPath)
-	var out bytes.Buffer
-	cmd.Stdout = &out
-	err = cmd.Run()
-	if err != nil {
-		log.Printf("failed to run cmd, reason: %v\n", err)
-		return
+	listFInfo := pathanalysis.DoAnalysis(TarPath, IgnoreList, IncludeList)
+	pl := protocol.CreateFInfoList()
+	for i := 0; i < len(listFInfo); i++ {
+		fi := protocol.CreateFInfo()
+		fi.Path = listFInfo[i].Path
+		fi.Modtime = listFInfo[i].ModifyTime
+		pl.FinfoList = append(pl.FinfoList, *fi)
 	}
 
-	fmt.Printf("cmd output: \n%s\n", out.String())
-
-	fmt.Println("extracting files...")
-	//var TarFiles
-	for {
-		line, err := out.ReadString('\n')
-		if err != nil {
-			break
-		}
-
-		line = strings.Replace(line, "\\", "/", -1)
-		if strings.HasPrefix(line, "X") {
-			fmt.Printf("ignore %s", line)
-			continue
-		}
-		if strings.HasPrefix(line, "?") {
-			if strings.Contains(line, ".") {
-				fmt.Printf("extracting new file: %s", line)
-			} else { //is a folder
-				fmt.Printf("ignore %s", line)
-			}
-		} else if strings.HasPrefix(line, "M") {
-			fmt.Printf("extracting modified file: %s", line)
-		}
-
-		if strings.
-	}
+	buff := pl.Marshal()
 }

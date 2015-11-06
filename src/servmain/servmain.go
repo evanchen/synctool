@@ -13,13 +13,12 @@ type MsgHandlerFunc func (uint16,[]byte) {}
 
 var g_msgHandlers = make(map[uint16]MsgHandlerFunc)
 
-func main() {
-	for k, v := range os.Args {
-		fmt.Println(k, v)
-	}
+const (
+	Port = ":1970"
+)
 
-	port := ":" + os.Args[1]
-	ln, err := net.Listen("tcp", port)
+func main() {
+	ln, err := net.Listen("tcp", Port)
 	if err != nil {
 		log.Fatalf("false listening port: %s", err)
 		return

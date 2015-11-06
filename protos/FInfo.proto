@@ -1,0 +1,8 @@
+FInfo {
+	path:string,
+	modtime:uint64
+}
+
+FInfoList {
+	finfoList:[FInfo]
+}
