@@ -9,7 +9,7 @@ import (
 	"os"
 )
 
-type MsgHandlerFunc func (uint16,[]byte) {}
+type MsgHandlerFunc func(uint16, []byte)
 
 var g_msgHandlers = make(map[uint16]MsgHandlerFunc)
 
@@ -24,6 +24,8 @@ func main() {
 		return
 	}
 
+	RegisterMsgHandler()
+
 	for {
 		conn, err := ln.Accept()
 		if err != nil {
@@ -36,7 +38,7 @@ func main() {
 }
 
 func RegisterMsgHandler() {
-	
+
 }
 
 func HandleConnection(conn net.Conn) {
@@ -59,27 +61,26 @@ func HandleConnection(conn net.Conn) {
 
 		f := GetMsgHandler(msgId)
 		if !f {
-			fmt.Printf("no msg handler for : %d \n",msgId)
+			fmt.Printf("no msg handler for : %d \n", msgId)
 			if msgLen > 0 {
-				content = make([]byte,msgLen)
+				content = make([]byte, msgLen)
 				conn.Read(content)
 				continue
 			}
 		} else if msgLen > 0 {
-			content = make([]byte,msgLen)
-			conn.Read(content)	
+			content = make([]byte, msgLen)
+			conn.Read(content)
 		}
-		
-		f(msgId,content)
+
+		f(msgId, content)
 	}
 }
 
 func GetMsgHandler(msgId uint16) MsgHandlerFunc {
-	f,ok := g_msgHandlers[msgId]
+	f, ok := g_msgHandlers[msgId]
 	if !ok {
 		return nil
-	} 
+	}
 
 	return f
 }
-
