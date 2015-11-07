@@ -1,30 +1,28 @@
 package main
 
 import (
-	"coding"
+	"flag"
 	"fmt"
 	"io"
-	"log"
+	"msghandler"
 	"net"
-	"os"
-)
-
-type MsgHandlerFunc func(uint16, []byte)
-
-var g_msgHandlers = make(map[uint16]MsgHandlerFunc)
-
-const (
-	Port = ":1970"
+	"protocol"
+	"syscall"
 )
 
 func main() {
+	var Port, TarPath string
+	flag.StringVar(&Port, "port", "./", "listening port")
+	flag.StringVar(&TarPath, "path", "./", "absolute file path")
+	Port = ":" + Port
+	Port = ":5500"
 	ln, err := net.Listen("tcp", Port)
 	if err != nil {
-		log.Fatalf("false listening port: %s", err)
+		fmt.Printf("false listening port: %s", err)
 		return
 	}
 
-	RegisterMsgHandler()
+	msghandler.RegisterHandler()
 
 	for {
 		conn, err := ln.Accept()
@@ -33,18 +31,15 @@ func main() {
 			continue
 		}
 
+		fmt.Println("new connection")
 		go HandleConnection(conn)
 	}
-}
-
-func RegisterMsgHandler() {
-
 }
 
 func HandleConnection(conn net.Conn) {
 	header := make([]byte, 4)
 	for {
-		rz, err := conn.Read(header)
+		_, err := conn.Read(header)
 		if err != nil {
 			if err == syscall.EINVAL {
 				continue
@@ -55,32 +50,27 @@ func HandleConnection(conn net.Conn) {
 			panic(err)
 		}
 
-		msgId, header1 := coding.decode_uint16(header)
-		msgLen, _ := coding.decode_uint16(header1)
+		msgLen, header1 := protocol.Decode_uint16(header)
+		msgId, _ := protocol.Decode_uint16(header1)
 		var content []byte
-
-		f := GetMsgHandler(msgId)
-		if !f {
-			fmt.Printf("no msg handler for : %d \n", msgId)
-			if msgLen > 0 {
-				content = make([]byte, msgLen)
-				conn.Read(content)
-				continue
-			}
-		} else if msgLen > 0 {
-			content = make([]byte, msgLen)
-			conn.Read(content)
+		if !(msgLen >= 0 && msgLen < 65535) {
+			fmt.Printf("msg len error: %d, connection colse", msgLen)
+			conn.Close()
+			return
 		}
 
-		f(msgId, content)
+		content = make([]byte, msgLen)
+		_, err = conn.Read(content)
+		if err != nil {
+			if err == syscall.EINVAL {
+				continue
+			} else if err == io.EOF {
+				fmt.Println("client close connection")
+				return
+			}
+			panic(err)
+		}
+		fmt.Printf("handling msg: %d, len: %d\n", msgId, msgLen)
+		msghandler.HandleMsg(msgId, content)
 	}
-}
-
-func GetMsgHandler(msgId uint16) MsgHandlerFunc {
-	f, ok := g_msgHandlers[msgId]
-	if !ok {
-		return nil
-	}
-
-	return f
 }

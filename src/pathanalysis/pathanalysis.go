@@ -12,16 +12,14 @@ import (
 var g_logger *log.Logger
 
 //create a log file and log.Logger
-func createFL(fname string) (*os.File, *log.Logger) {
-	path := "logs/" + fname
+func CreateFL(fname string) {
+	path := fname
 	f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
 	if err != nil {
 		log.Fatalf("failed to create logfile: %s: %s", fname, err.Error())
-		return nil, nil
+		return
 	}
-	l := log.New(f, "", log.LstdFlags)
-
-	return f, l
+	g_logger = log.New(f, "", log.LstdFlags)
 }
 
 // ignore directory list
@@ -41,11 +39,7 @@ var g_Ch = make(chan *FInfo, 5)
 var g_RootName string
 
 func Init(path, ignoreList, includeList string) {
-	_, lg := createFL("output.log")
-	if lg == nil {
-		panic("logger failed")
-	}
-	g_logger = lg
+	CreateFL("client.log")
 	name := filepath.Base(path)
 	g_RootName = name
 

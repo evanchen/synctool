@@ -13,7 +13,7 @@ set GOPATH=%~dp0
 
 gofmt -w src
 
-go install clientmain
+go install %1
 :end
 
 echo finished

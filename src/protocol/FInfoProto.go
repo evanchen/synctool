@@ -16,14 +16,14 @@ func CreateFInfo() *FInfo {
 
 func (this *FInfo) Marshal() []byte {
 	buf := make([]byte, 0, 16)
-	buf = append(buf, encode_string(this.Path)...)
-	buf = append(buf, encode_uint64(this.Modtime)...)
+	buf = append(buf, Encode_string(this.Path)...)
+	buf = append(buf, Encode_uint64(this.Modtime)...)
 	return buf
 }
 
 func (this *FInfo) Unmarshal(Data []byte) []byte {
-	this.Path, Data = decode_string(Data)
-	this.Modtime, Data = decode_uint64(Data)
+	this.Path, Data = Decode_string(Data)
+	this.Modtime, Data = Decode_uint64(Data)
 	return Data
 }
 
@@ -39,28 +39,28 @@ func CreateFInfoList() *FInfoList {
 
 func (this *FInfoList) Marshal() []byte {
 	buf := make([]byte, 0, 16)
-	buf = append(buf, encode_array_FInfo(this.FinfoList)...)
+	buf = append(buf, Encode_array_FInfo(this.FinfoList)...)
 	return buf
 }
 
 func (this *FInfoList) Unmarshal(Data []byte) []byte {
-	this.FinfoList, Data = decode_array_FInfo(Data)
+	this.FinfoList, Data = Decode_array_FInfo(Data)
 	return Data
 }
 
-func encode_array_FInfo(FinfoList []FInfo) []byte {
+func Encode_array_FInfo(FinfoList []FInfo) []byte {
 	buf := make([]byte, 0, 16)
 	size := uint16(len(FinfoList))
-	buf = append(buf, encode_uint16(size)...)
+	buf = append(buf, Encode_uint16(size)...)
 	for _, obj := range FinfoList {
 		buf = append(buf, obj.Marshal()...)
 	}
 	return buf
 }
 
-func decode_array_FInfo(Data []byte) ([]FInfo, []byte) {
+func Decode_array_FInfo(Data []byte) ([]FInfo, []byte) {
 	var size uint16
-	size, Data = decode_uint16(Data)
+	size, Data = Decode_uint16(Data)
 	FinfoList := make([]FInfo, 0, size)
 	var obj *FInfo
 	for i := uint16(0); i < size; i++ {

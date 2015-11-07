@@ -1,1 +1,0 @@
-start bin/clientmain.exe -ip 192.168.1.98 -port 5500 -path "E:\\trunk\\logic" -ignore *.svn;*.cpp -include *.lua
