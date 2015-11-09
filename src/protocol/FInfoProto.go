@@ -6,7 +6,7 @@ package protocol
 //===========================protocol FInfo===========================
 type FInfo struct {
 	Path    string
-	Modtime uint64
+	ModTime uint64
 }
 
 func CreateFInfo() *FInfo {
@@ -17,13 +17,13 @@ func CreateFInfo() *FInfo {
 func (this *FInfo) Marshal() []byte {
 	buf := make([]byte, 0, 16)
 	buf = append(buf, Encode_string(this.Path)...)
-	buf = append(buf, Encode_uint64(this.Modtime)...)
+	buf = append(buf, Encode_uint64(this.ModTime)...)
 	return buf
 }
 
 func (this *FInfo) Unmarshal(Data []byte) []byte {
 	this.Path, Data = Decode_string(Data)
-	this.Modtime, Data = Decode_uint64(Data)
+	this.ModTime, Data = Decode_uint64(Data)
 	return Data
 }
 
@@ -69,4 +69,46 @@ func Decode_array_FInfo(Data []byte) ([]FInfo, []byte) {
 		FinfoList = append(FinfoList, *obj)
 	}
 	return FinfoList, Data
+}
+
+//===========================protocol FilePath===========================
+type FilePath struct {
+	Path string
+}
+
+func CreateFilePath() *FilePath {
+	obj := &FilePath{}
+	return obj
+}
+
+func (this *FilePath) Marshal() []byte {
+	buf := make([]byte, 0, 16)
+	buf = append(buf, Encode_string(this.Path)...)
+	return buf
+}
+
+func (this *FilePath) Unmarshal(Data []byte) []byte {
+	this.Path, Data = Decode_string(Data)
+	return Data
+}
+
+//===========================protocol TransferOver===========================
+type TransferOver struct {
+	IsOver uint8
+}
+
+func CreateTransferOver() *TransferOver {
+	obj := &TransferOver{}
+	return obj
+}
+
+func (this *TransferOver) Marshal() []byte {
+	buf := make([]byte, 0, 16)
+	buf = append(buf, Encode_uint8(this.IsOver)...)
+	return buf
+}
+
+func (this *TransferOver) Unmarshal(Data []byte) []byte {
+	this.IsOver, Data = Decode_uint8(Data)
+	return Data
 }

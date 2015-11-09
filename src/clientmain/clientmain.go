@@ -3,23 +3,32 @@ package main
 import (
 	"flag"
 	"fmt"
+	"gloger"
+	"io"
 	"msghandler"
 	"net"
 	"pathanalysis"
-	"protocol"
+	"sync"
+	"syscall"
 )
 
+var wg sync.WaitGroup
+
 func main() {
-	var ServIp, ServPort, TarPath, IgnoreList, IncludeList string
+	var ServIp, ServPort, TarPath, ServPath, IgnoreList, IncludeList string
 	flag.StringVar(&ServIp, "ip", "./", "server ip")
 	flag.StringVar(&ServPort, "port", "./", "server port")
-	flag.StringVar(&TarPath, "path", "./", "absolute file path")
+	flag.StringVar(&TarPath, "cpath", "./", "client absolute file path")
+	flag.StringVar(&ServPath, "spath", "./", "server absolute file path")
 	flag.StringVar(&IgnoreList, "ignore-dir", "./", "ignore directory: setting;.svn;common")
 	flag.StringVar(&IncludeList, "include", "./", "include surfix files: lua;cpp")
 	flag.Parse()
 
-	ServIp, ServPort, TarPath, IgnoreList, IncludeList = "127.0.0.1", "5500", "e:\\trunk\\logic", ".svn;setting;common", "*.lua;*.cp"
-	fmt.Println(ServIp, ServPort, TarPath, IgnoreList, IncludeList)
+	ServIp, ServPort, TarPath, ServPath, IgnoreList, IncludeList = "127.0.0.1", "5500", "e:\\trunk\\logic", "f:\\test", ".svn;setting;common", "*.lua;*.cp"
+	fmt.Println(ServIp, ServPort, TarPath, ServPath, IgnoreList, IncludeList)
+
+	gloger.CreateFL("logclient.log")
+	msghandler.RegisterHandler()
 
 	servAddr := fmt.Sprintf("%s:%s", ServIp, ServPort)
 	conn, err := net.Dial("tcp", servAddr)
@@ -31,31 +40,38 @@ func main() {
 
 	fmt.Printf("connected to server: %s!\n", servAddr)
 
-	listFInfo := pathanalysis.DoAnalysis(TarPath, IgnoreList, IncludeList)
-	pl := protocol.CreateFInfoList()
-	for i := 0; i < len(listFInfo); i++ {
-		fi := protocol.CreateFInfo()
-		fi.Path = listFInfo[i].Path
-		fi.Modtime = uint64(listFInfo[i].ModifyTime)
-		pl.FinfoList = append(pl.FinfoList, *fi)
-	}
+	wg.Add(2)
+	//analyze file informations and send to server
+	go func() {
+		defer wg.Done()
+		pathanalysis.DoAnalysis(TarPath, IgnoreList, IncludeList, ServPath, conn)
+	}()
 
-	buff := pl.Marshal()
-	csz := len(buff)
-	tsz := 4 + csz
-	total := make([]byte, tsz)
-	tmp := protocol.Encode_uint16(uint16(csz))
-	copy(total, tmp)
-	fmt.Println(csz, tmp, total[:4])
+	//receive msg from server
+	go func() {
+		defer wg.Done()
+		DoRecvMsg(conn)
+	}()
 
-	msgId := uint16(msghandler.C2S_FINFO)
-	tmp = protocol.Encode_uint16(msgId)
-	copy(total[2:], tmp)
-	fmt.Println(msgId, tmp, total[:4])
+	wg.Wait()
+}
 
-	copy(total[4:], buff)
-	_, err = conn.Write(total)
-	if err != nil {
-		fmt.Printf("connection write error: %s", err)
+func DoRecvMsg(conn net.Conn) {
+	for {
+		msgId, content, err := msghandler.DoRecv(conn)
+		if err != nil {
+			if err == syscall.EINVAL {
+				continue
+			} else if err == io.EOF {
+				fmt.Println("connection closed")
+				conn.Close()
+				return
+			}
+			fmt.Println(err)
+			return
+		}
+
+		fmt.Printf("handling msg: %d, len: %d\n", msgId, len(content))
+		msghandler.HandleMsg(msgId, content, conn)
 	}
 }

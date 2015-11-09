@@ -2,25 +2,15 @@ package pathanalysis
 
 import (
 	"fmt"
-	"log"
+	"gloger"
+	"msghandler"
+	"net"
 	"os"
 	"path/filepath"
+	"protocol"
 	"runtime"
 	"strings"
 )
-
-var g_logger *log.Logger
-
-//create a log file and log.Logger
-func CreateFL(fname string) {
-	path := fname
-	f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
-	if err != nil {
-		log.Fatalf("failed to create logfile: %s: %s", fname, err.Error())
-		return
-	}
-	g_logger = log.New(f, "", log.LstdFlags)
-}
 
 // ignore directory list
 var g_IgnoreList map[string]bool = make(map[string]bool)
@@ -39,7 +29,7 @@ var g_Ch = make(chan *FInfo, 5)
 var g_RootName string
 
 func Init(path, ignoreList, includeList string) {
-	CreateFL("client.log")
+
 	name := filepath.Base(path)
 	g_RootName = name
 
@@ -68,7 +58,7 @@ func ParseBlockSurfixList(tolist map[string]bool, strList string) {
 }
 
 //walk through child directories and files
-func DoAnalysis(path, ignoreList, includeList string) (List []*FInfo) {
+func DoAnalysis(path, ignoreList, includeList, ServPath string, conn net.Conn) {
 	Init(path, ignoreList, includeList)
 	fmt.Println(path, ignoreList, includeList, g_RootName, g_IgnoreList, g_IncludeList)
 	go func() {
@@ -76,12 +66,27 @@ func DoAnalysis(path, ignoreList, includeList string) (List []*FInfo) {
 		filepath.Walk(path, walkFunc)
 	}()
 
+	//pack informations
+	pl := protocol.CreateFInfoList()
 	for v := range g_Ch {
-		List = append(List, v)
-		g_logger.Printf("%s %s %d %d\n", v.Path, v.Name, v.Type, v.ModifyTime)
+		gloger.GetLoger().Printf("%s %s %d %d\n", v.Path, v.Name, v.Type, v.ModifyTime)
+
+		fi := protocol.CreateFInfo()
+		fi.Path = filepath.Join(ServPath, v.Path)
+		fi.ModTime = uint64(v.ModifyTime)
+
+		if runtime.GOOS == "windows" {
+			fi.Path = strings.Replace(fi.Path, "\\", "/", -1)
+		}
+
+		pl.FinfoList = append(pl.FinfoList, *fi)
 	}
 
-	return List
+	buff := msghandler.Marshal(uint16(msghandler.C2S_FINFO), pl)
+	_, err := conn.Write(buff)
+	if err != nil {
+		fmt.Printf("connection write error: %s", err)
+	}
 }
 
 //walk function
@@ -111,17 +116,14 @@ func walkFunc(path string, info os.FileInfo, err error) error {
 		}
 	}
 
-	fi := new(FInfo)
-	fi.Name = name
-	fi.ModifyTime = info.ModTime().UnixNano()
-	fi.Path = path
-	if isdir {
-		fi.Type = 1
-	} else {
+	if !isdir {
+		fi := new(FInfo)
+		fi.Name = name
+		fi.ModifyTime = info.ModTime().UnixNano()
+		fi.Path = path
 		fi.Type = 2
+		g_Ch <- fi
 	}
-
-	g_Ch <- fi
 
 	return err
 }
@@ -137,7 +139,6 @@ func FilterFileSurfix(path, name string) bool {
 		surfix = name[lidx:]
 	}
 	if _, ok := g_IncludeList[surfix]; !ok {
-		//g_logger.Printf("ignore file: %s\n", name)
 		return true
 	}
 
@@ -146,7 +147,6 @@ func FilterFileSurfix(path, name string) bool {
 
 func FilterDir(path, name string) bool {
 	if name == "." || name == ".." {
-		//g_logger.Printf("ignore diretory: %s, %s\n", path, name)
 		return true
 	}
 
@@ -158,7 +158,6 @@ func FilterDir(path, name string) bool {
 	}
 	for i := 0; i < len(arrpath); i++ {
 		if _, ok := g_IgnoreList[arrpath[i]]; ok {
-			//g_logger.Printf("ignore diretory: %s, %s\n", path, name)
 			return true
 		}
 	}

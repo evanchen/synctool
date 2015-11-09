@@ -1,41 +1,54 @@
 package msghandler
 
 import (
-	//"fmt"
-	"log"
+	"gloger"
+	"net"
 	"os"
 	"protocol"
 )
 
-var g_logger *log.Logger
-
-//create a log file and log.Logger
-func CreateFL(fname string) {
-	path := fname
-	f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
-	if err != nil {
-		log.Fatalf("failed to create logfile: %s: %s", fname, err.Error())
-		return
-	}
-	g_logger = log.New(f, "", log.LstdFlags)
-}
-
-func c2s_finfo(msgId uint16, msg []byte) {
+func c2s_finfo(msgId uint16, msg []byte, conn net.Conn) {
 	infoList := protocol.CreateFInfoList()
 	infoList.Unmarshal(msg)
 	for i := 0; i < len(infoList.FinfoList); i++ {
-		g_logger.Println(infoList.FinfoList[i].Path, infoList.FinfoList[i].Modtime)
+		Path := infoList.FinfoList[i].Path
+		ModTime := infoList.FinfoList[i].ModTime
+
+		// if file not exsit, create one
+		finfo, err := os.Stat(Path)
+		if err != nil || (uint64(finfo.ModTime().UnixNano()) < ModTime) {
+			if err != nil {
+				gloger.GetLoger().Printf("c2s_finfo: error: %v\n", err)
+			}
+			gloger.GetLoger().Printf("c2s_finfo: need to cover: %s\n", Path)
+
+			obj := protocol.CreateFilePath()
+			obj.Path = Path
+			buff := Marshal(uint16(S2C_UPDATE_FILE), obj)
+			_, err = conn.Write(buff)
+			if err != nil {
+				panic(err)
+			}
+		}
 	}
 }
 
-func s2c_finfo(msgId uint16, msg []byte) {
+func s2c_finfo(msgId uint16, msg []byte, conn net.Conn) {
 
 }
 
-func c2s_update_file(msgId uint16, msg []byte) {
+func c2s_update_file(msgId uint16, msg []byte, conn net.Conn) {
 
 }
 
-func s2c_update_file(msgId uint16, msg []byte) {
+func s2c_update_file(msgId uint16, msg []byte, conn net.Conn) {
+	obj := protocol.CreateFilePath()
+	obj.Unmarshal(msg)
 
+	//send modified file to server
+	gloger.GetLoger().Printf("send file: %s\n", obj.Path)
+}
+
+func s2c_done(msgId uint16, msg []byte, conn net.Conn) {
+	conn.Close()
 }

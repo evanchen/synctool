@@ -3,17 +3,21 @@ package main
 import (
 	"flag"
 	"fmt"
+	"gloger"
 	"io"
 	"msghandler"
 	"net"
-	"protocol"
+	"sync"
 	"syscall"
 )
+
+var wg sync.WaitGroup
 
 func main() {
 	var Port, TarPath string
 	flag.StringVar(&Port, "port", "./", "listening port")
 	flag.StringVar(&TarPath, "path", "./", "absolute file path")
+	flag.Parse()
 	Port = ":" + Port
 	Port = ":5500"
 	ln, err := net.Listen("tcp", Port)
@@ -22,55 +26,42 @@ func main() {
 		return
 	}
 
+	gloger.CreateFL("logserv.log")
 	msghandler.RegisterHandler()
 
-	for {
-		conn, err := ln.Accept()
-		if err != nil {
-			fmt.Println("accept error: %s", err)
-			continue
-		}
-
-		fmt.Println("new connection")
-		go HandleConnection(conn)
+	conn, err := ln.Accept()
+	if err != nil {
+		fmt.Println("accept error: %s", err)
+		return
 	}
+	defer conn.Close()
+
+	wg.Add(1)
+	go HandleConnection(conn)
+
+	wg.Wait()
 }
 
 func HandleConnection(conn net.Conn) {
-	header := make([]byte, 4)
+	defer wg.Done()
+
 	for {
-		_, err := conn.Read(header)
+		msgId, content, err := msghandler.DoRecv(conn)
+
 		if err != nil {
 			if err == syscall.EINVAL {
 				continue
 			} else if err == io.EOF {
-				fmt.Println("client close connection")
+				fmt.Println("connection closed")
+				conn.Close()
 				return
 			}
-			panic(err)
-		}
-
-		msgLen, header1 := protocol.Decode_uint16(header)
-		msgId, _ := protocol.Decode_uint16(header1)
-		var content []byte
-		if !(msgLen >= 0 && msgLen < 65535) {
-			fmt.Printf("msg len error: %d, connection colse", msgLen)
-			conn.Close()
+			fmt.Println(err)
 			return
+		} else {
+			fmt.Printf("handling msg: %d, len: %d\n", msgId, len(content))
 		}
 
-		content = make([]byte, msgLen)
-		_, err = conn.Read(content)
-		if err != nil {
-			if err == syscall.EINVAL {
-				continue
-			} else if err == io.EOF {
-				fmt.Println("client close connection")
-				return
-			}
-			panic(err)
-		}
-		fmt.Printf("handling msg: %d, len: %d\n", msgId, msgLen)
-		msghandler.HandleMsg(msgId, content)
+		msghandler.HandleMsg(msgId, content, conn)
 	}
 }
