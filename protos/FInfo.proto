@@ -1,16 +1,30 @@
-FInfo {
-	path:string,
+//client file info
+ClientFInfo {
+	tarPath:string,
+	srcPath:string,
 	modTime:uint64
+	totalFileNum:uint32
 }
 
-FInfoList {
-	finfoList:[FInfo]
+ClientFInfoList {
+	flist:[ClientFInfo]
 }
 
-FilePath {
-	path:string
+//client send big data to server, in pieces
+ClientDataBuff {
+	msgId:uint16,	//call this message handler after buffer is completely transferred
+	buff:[uint8],	//pieces of big data transfer
+	bpos:uint32,	//begin position of the data piece
+	total:uint32,	//total size of data
+	path:string		//absolute file path, if the data is a file
 }
 
-TransferOver {
-	isOver:uint8
+ServNeedClientData {
+	bpos:uint32		//need file data, start with the begin pos
+	path:string		//absolute file path, if the data is a file
+}
+
+FileMD5Info {
+	path:string		//file path
+	sum:string		//md5sum
 }

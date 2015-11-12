@@ -17,11 +17,10 @@ type Marshaller interface {
 }
 
 func RegisterHandler() {
+	g_msgHandlers[C2S_FILE_INFO_BUFF] = c2s_file_info_buff
 	g_msgHandlers[C2S_FINFO] = c2s_finfo
-	g_msgHandlers[S2C_FINFO] = s2c_finfo
-	g_msgHandlers[C2S_UPDATE_FILE] = c2s_update_file
-	g_msgHandlers[S2C_UPDATE_FILE] = s2c_update_file
-	g_msgHandlers[S2C_DONE] = s2c_done
+	g_msgHandlers[S2C_NEED_FILE_INFO] = s2c_need_file_info
+	g_msgHandlers[C2S_FILE_MD5_INFO] = c2s_file_md5_info
 }
 
 func GetMsgHandler(msgId uint16) MsgHandlerFunc {

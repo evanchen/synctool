@@ -19,13 +19,12 @@ var g_IgnoreList map[string]bool = make(map[string]bool)
 var g_IncludeList map[string]bool = make(map[string]bool)
 
 type FInfo struct {
-	Name       string
-	Path       string
-	Type       byte
-	ModifyTime int64
+	TarPath string
+	SrcPath string
+	ModTime int64
 }
 
-var g_Ch = make(chan *FInfo, 5)
+var g_Ch = make(chan *protocol.ClientFInfo, 5)
 var g_RootName string
 
 func Init(path, ignoreList, includeList string) {
@@ -66,26 +65,35 @@ func DoAnalysis(path, ignoreList, includeList, ServPath string, conn net.Conn) {
 		filepath.Walk(path, walkFunc)
 	}()
 
+	list := make([]*protocol.ClientFInfo, 0, 8)
 	//pack informations
-	pl := protocol.CreateFInfoList()
 	for v := range g_Ch {
-		gloger.GetLoger().Printf("%s %s %d %d\n", v.Path, v.Name, v.Type, v.ModifyTime)
+		gloger.GetLoger().Printf("%s %d\n", v.SrcPath, v.ModTime)
 
-		fi := protocol.CreateFInfo()
-		fi.Path = filepath.Join(ServPath, v.Path)
-		fi.ModTime = uint64(v.ModifyTime)
+		v.TarPath = filepath.Join(ServPath, v.TarPath)
 
 		if runtime.GOOS == "windows" {
-			fi.Path = strings.Replace(fi.Path, "\\", "/", -1)
+			v.TarPath = strings.Replace(v.TarPath, "\\", "/", -1)
 		}
 
-		pl.FinfoList = append(pl.FinfoList, *fi)
+		list = append(list, v)
 	}
 
-	buff := msghandler.Marshal(uint16(msghandler.C2S_FINFO), pl)
-	_, err := conn.Write(buff)
-	if err != nil {
-		fmt.Printf("connection write error: %s", err)
+	size := len(list)
+	if size == 0 {
+		fmt.Printf("Path: %s no files\n", path)
+		conn.Close()
+		os.Exit(0)
+	} else {
+		for i := 0; i < size; i++ {
+			fi := list[i]
+			fi.TotalFileNum = uint32(size)
+			buff := msghandler.Marshal(uint16(msghandler.C2S_FINFO), fi)
+			_, err := conn.Write(buff)
+			if err != nil {
+				panic(fmt.Sprintf("connection write error: %s", err))
+			}
+		}
 	}
 }
 
@@ -96,7 +104,7 @@ func walkFunc(path string, info os.FileInfo, err error) error {
 	}
 	// get root directory: for example, "path: /home/chenwenqiang/logic/module/act/act_pto.lua" -> "logic/module/act/act_pto.lua",
 	// assuming root name is "logic"
-
+	orgPath := path
 	isdir := info.IsDir()
 	name := info.Name()
 
@@ -117,11 +125,10 @@ func walkFunc(path string, info os.FileInfo, err error) error {
 	}
 
 	if !isdir {
-		fi := new(FInfo)
-		fi.Name = name
-		fi.ModifyTime = info.ModTime().UnixNano()
-		fi.Path = path
-		fi.Type = 2
+		fi := protocol.CreateClientFInfo()
+		fi.ModTime = uint64(info.ModTime().UnixNano())
+		fi.TarPath = path
+		fi.SrcPath = orgPath
 		g_Ch <- fi
 	}
 

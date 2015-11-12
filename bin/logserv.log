@@ -1,0 +1,171 @@
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\base\global.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\base\preload.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\cmd\cmdlib\arena_cmd.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\cmd\cmdlib\base_cmd.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\cmd\cmdlib\combat_cmd.lua
+2015/11/12 17:29:18 c2s_finfo: error: GetFileAttributesEx f:/test/logic/cmd/cmdlib/expedition_cmd.lua: The system cannot find the file specified.
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\cmd\cmdlib\expedition_cmd.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\cmd\cmdlib\home_cmd.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\cmd\cmdlib\pet_cmd.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\cmd\cmdlib\scene_cmd.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\cmd\cmdlib\worldboss_cmd.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\cmd\cmdlib\worldlevel_cmd.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\cmd\wizcmd.lua
+2015/11/12 17:29:18 c2s_finfo: error: GetFileAttributesEx f:/test/logic/fortest/queryfamily.lua: The system cannot find the file specified.
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\fortest\queryfamily.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\fortest\weekrace.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\manager\allcombat.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\manager\allsetting.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\manager\alluser.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\manager\combat_factory.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\manager\db_config.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\manager\idmng.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\manager\npc_factory.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\master\act\master_actmgr.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\master\instance\master_teaminst.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\master\instance\master_teaminst_mgr.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\master\master_allinfo.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\master\master_arenamgr.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\master\master_chat.lua
+2015/11/12 17:29:18 c2s_finfo: error: GetFileAttributesEx f:/test/logic/master/master_expedition.lua: The system cannot find the file specified.
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\master\master_expedition.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\master\master_homemgr.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\master\master_instancemgr.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\master\master_parseenter.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\master\master_pay.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\master\master_scenemgr.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\master\polis\master_polis.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\master\polis\polis.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\master\polis\polis_tree.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\act\act_common.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\act\act_func.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\act\act_guide.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\act\act_mgr.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\act\acttimetips.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\act\allact\act_tourshop.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\act\allact\charge\basecharge_obj.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\act\allact\charge\charge_mgr.lua
+2015/11/12 17:29:18 c2s_finfo: error: GetFileAttributesEx f:/test/logic/module/act/allact/charge/gold_house_obj.lua: The system cannot find the file specified.
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\act\allact\charge\gold_house_obj.lua
+2015/11/12 17:29:18 c2s_finfo: error: GetFileAttributesEx f:/test/logic/module/act/allact/charge/rebate_act.lua: The system cannot find the file specified.
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\act\allact\charge\rebate_act.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\act\allact\charge\rebate_obj.lua
+2015/11/12 17:29:18 c2s_finfo: error: GetFileAttributesEx f:/test/logic/module/act/allact/charge/rich_act.lua: The system cannot find the file specified.
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\act\allact\charge\rich_act.lua
+2015/11/12 17:29:18 c2s_finfo: error: GetFileAttributesEx f:/test/logic/module/act/allact/charge/singlecharge_act.lua: The system cannot find the file specified.
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\act\allact\charge\singlecharge_act.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\act\allact\charge\singlecharge_obj.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\act\allact\crystalbattle\crystalbattle_act.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\act\allact\goddess\race.lua
+2015/11/12 17:29:18 c2s_finfo: error: GetFileAttributesEx f:/test/logic/module/act/allact/herotrial/herotrial_yunying.lua: The system cannot find the file specified.
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\act\allact\herotrial\herotrial_yunying.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\act\allact\newserver\ns_dayrank.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\act\allact\newserver\ns_dayrank_act.lua
+2015/11/12 17:29:18 c2s_finfo: error: GetFileAttributesEx f:/test/logic/module/act/allact/rotarytable/rotary.lua: The system cannot find the path specified.
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\act\allact\rotarytable\rotary.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\act\allact\weekrace\point.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\act\baseact.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\act\cross_act.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\act\pto_act.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\autobroadcast.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\buff\buff.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\buff\buffmgr.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\combat\combat.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\combat\combat_team.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\combat\controller.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\combat\fighter.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\combat\fighter_pet.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\combat\fighter_user.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\combat\reward\reward.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\combat\skill.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\combat\skillapi.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\combat\skillmgr.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\counter\counter_mgr.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\cross_svr\cross_combat.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\cross_svr\cross_dest_mgr.lua
+2015/11/12 17:29:18 c2s_finfo: error: GetFileAttributesEx f:/test/logic/module/cross_svr/cross_module/cross_teaminst.lua: The system cannot find the file specified.
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\cross_svr\cross_module\cross_teaminst.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\dolist\dolist_mgr.lua
+2015/11/12 17:29:18 c2s_finfo: error: GetFileAttributesEx f:/test/logic/module/expedition_mgr.lua: The system cannot find the file specified.
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\expedition_mgr.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\faceicon\faceicon_mgr.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\family\act\family_boss.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\family\family.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\fighting\fighting_mgr.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\funcopen\funcopen_mgr.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\home\activity\homeact_mgr.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\home\activity\homeactbase.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\home\activity\party\party.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\home\activity\party\question.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\home\basehomeitem.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\home\bobi.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\home\home.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\home\home_action.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\home\home_mgr.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\home\homeitem_hotspring.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\home\homeitem_mine.lua
+2015/11/12 17:29:18 c2s_finfo: error: GetFileAttributesEx f:/test/logic/module/home/homeitem_school.lua: The system cannot find the file specified.
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\home\homeitem_school.lua
+2015/11/12 17:29:18 c2s_finfo: error: GetFileAttributesEx f:/test/logic/module/home/homeitem_train.lua: The system cannot find the file specified.
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\home\homeitem_train.lua
+2015/11/12 17:29:18 c2s_finfo: error: GetFileAttributesEx f:/test/logic/module/home/homepet_mgr.lua: The system cannot find the file specified.
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\home\homepet_mgr.lua
+2015/11/12 17:29:18 c2s_finfo: error: GetFileAttributesEx f:/test/logic/module/home/pet.lua: The system cannot find the file specified.
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\home\pet.lua
+2015/11/12 17:29:18 c2s_finfo: error: GetFileAttributesEx f:/test/logic/module/home/school_mgr.lua: The system cannot find the file specified.
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\home\school_mgr.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\instance\checkpoints_mgr.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\instance\endlessbattle_mgr.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\instance\instance.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\instance\instance_mgr.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\instance\team_inst\team_instmgr.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\instance\team_inst\team_instobj.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\item\autouse.lua
+2015/11/12 17:29:18 c2s_finfo: error: GetFileAttributesEx f:/test/logic/module/item/equipcollect_helper.lua: The system cannot find the file specified.
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\item\equipcollect_helper.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\item\frame.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\linescene_mgr.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\login\login_platform.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\manufacture\equipmanufacture_mgr.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\mount\mount_mgr.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\newbie\newbie_guide.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\offlinedata_mgr.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\patrol\patrol_mgr.lua
+2015/11/12 17:29:18 c2s_finfo: error: GetFileAttributesEx f:/test/logic/module/pet/pet_brand.lua: The system cannot find the file specified.
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\pet\pet_brand.lua
+2015/11/12 17:29:18 c2s_finfo: error: GetFileAttributesEx f:/test/logic/module/pet/petbreak.lua: The system cannot find the file specified.
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\pet\petbreak.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\pet\petmgr.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\polis\polis.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\polis\polis_mgr.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\polis\task\polis_task.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\reward\goddoor_mgr.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\reward\reward_mgr.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\shop\BaseShopObj.lua
+2015/11/12 17:29:18 c2s_finfo: error: GetFileAttributesEx f:/test/logic/module/shop/GodPalaceObj.lua: The system cannot find the file specified.
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\shop\GodPalaceObj.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\shop\PublicShopObj.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\shop\TourShop.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\shop\garbage_mgr.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\shop\shop_mgr.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\sync_time.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\task\task_func.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\time.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\user_atr.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\user_customfunc.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\userstat_mgr.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\module\worldlevel_mgr.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\monitorserver\main.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\obj\item\giftbox.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\obj\item\godequip.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\obj\item\homeitem.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\obj\item\petequip.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\obj\item\userequip.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\obj\item.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\obj\mount.lua
+2015/11/12 17:29:18 c2s_finfo: error: GetFileAttributesEx f:/test/logic/obj/npc/teaminst_monster.lua: The system cannot find the file specified.
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\obj\npc\teaminst_monster.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\obj\pet.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\obj\user.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\shell\merge\func\friend.lua
+2015/11/12 17:29:18 c2s_finfo: need to cover: e:\trunk\logic\shell\merge\mergemain.lua

@@ -1,10 +1,8 @@
 package msghandler
 
 const (
-	_         = iota
-	C2S_FINFO = iota
-	S2C_FINFO
-	C2S_UPDATE_FILE
-	S2C_UPDATE_FILE
-	S2C_DONE
+	C2S_FILE_INFO_BUFF = iota
+	C2S_FINFO
+	S2C_NEED_FILE_INFO
+	C2S_FILE_MD5_INFO
 )
