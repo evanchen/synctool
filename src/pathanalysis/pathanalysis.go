@@ -18,12 +18,6 @@ var g_IgnoreList map[string]bool = make(map[string]bool)
 // include file surfixes list
 var g_IncludeList map[string]bool = make(map[string]bool)
 
-type FInfo struct {
-	TarPath string
-	SrcPath string
-	ModTime int64
-}
-
 var g_Ch = make(chan *protocol.ClientFInfo, 5)
 var g_RootName string
 
@@ -68,7 +62,7 @@ func DoAnalysis(path, ignoreList, includeList, ServPath string, conn net.Conn) {
 	list := make([]*protocol.ClientFInfo, 0, 8)
 	//pack informations
 	for v := range g_Ch {
-		gloger.GetLoger().Printf("%s %d\n", v.SrcPath, v.ModTime)
+		//gloger.GetLoger().Printf("%s %d\n", v.SrcPath, v.ModTime)
 
 		v.TarPath = filepath.Join(ServPath, v.TarPath)
 
@@ -125,6 +119,10 @@ func walkFunc(path string, info os.FileInfo, err error) error {
 	}
 
 	if !isdir {
+		if info.Size() == 0 {
+			gloger.GetLoger().Printf("ignore empty file : %s\n", orgPath)
+			return err
+		}
 		fi := protocol.CreateClientFInfo()
 		fi.ModTime = uint64(info.ModTime().UnixNano())
 		fi.TarPath = path

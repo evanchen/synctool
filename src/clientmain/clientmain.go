@@ -10,24 +10,26 @@ import (
 	"pathanalysis"
 	"sync"
 	"syscall"
+	"time"
 )
 
 var wg sync.WaitGroup
 
 func main() {
 	var ServIp, ServPort, TarPath, ServPath, IgnoreList, IncludeList string
-	flag.StringVar(&ServIp, "ip", "./", "server ip")
-	flag.StringVar(&ServPort, "port", "./", "server port")
-	flag.StringVar(&TarPath, "cpath", "./", "client absolute file path")
-	flag.StringVar(&ServPath, "spath", "./", "server absolute file path")
-	flag.StringVar(&IgnoreList, "ignore-dir", "./", "ignore directory: setting;.svn;common")
-	flag.StringVar(&IncludeList, "include", "./", "include surfix files: lua;cpp")
+	flag.StringVar(&ServIp, "ip", "127.0.0.1", "server ip")
+	flag.StringVar(&ServPort, "port", "5500", "server port")
+	flag.StringVar(&TarPath, "cpath", "/home/tarpath", "client absolute file path")
+	flag.StringVar(&ServPath, "spath", "/home/tmp", "server absolute file path")
+	flag.StringVar(&IgnoreList, "ignore-dir", ".svn", "ignore directory")
+	flag.StringVar(&IncludeList, "include", "*.lua;*.h", "include surfix files")
 	flag.Parse()
 
-	ServIp, ServPort, TarPath, ServPath, IgnoreList, IncludeList = "127.0.0.1", "5500", "e:\\trunk\\logic", "f:\\test", ".svn;setting;common", "*.lua;*.cp"
 	fmt.Println(ServIp, ServPort, TarPath, ServPath, IgnoreList, IncludeList)
 
-	gloger.CreateFL("logclient.log")
+	t := time.Now()
+	logName := fmt.Sprintf("client_%04d%02d%02d_%02d%02d%02d.log", t.Year(), t.Month(), t.Day(), t.Hour(), t.Minute(), t.Second())
+	gloger.CreateFL(logName)
 	msghandler.RegisterHandler()
 
 	servAddr := fmt.Sprintf("%s:%s", ServIp, ServPort)
@@ -71,7 +73,7 @@ func DoRecvMsg(conn net.Conn) {
 			return
 		}
 
-		fmt.Printf("handling msg: %d, len: %d\n", msgId, len(content))
+		//fmt.Printf("handling msg: %d, len: %d\n", msgId, len(content))
 		msghandler.HandleMsg(msgId, content, conn)
 	}
 }

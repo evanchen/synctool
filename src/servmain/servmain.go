@@ -9,24 +9,24 @@ import (
 	"net"
 	"sync"
 	"syscall"
+	"time"
 )
 
 var wg sync.WaitGroup
 
 func main() {
-	var Port, TarPath string
+	var Port string
 	flag.StringVar(&Port, "port", "./", "listening port")
-	flag.StringVar(&TarPath, "path", "./", "absolute file path")
 	flag.Parse()
 	Port = ":" + Port
-	Port = ":5500"
 	ln, err := net.Listen("tcp", Port)
 	if err != nil {
 		fmt.Printf("false listening port: %s", err)
 		return
 	}
-
-	gloger.CreateFL("logserv.log")
+	t := time.Now()
+	logName := fmt.Sprintf("serv_%04d%02d%02d_%02d%02d%02d.log", t.Year(), t.Month(), t.Day(), t.Hour(), t.Minute(), t.Second())
+	gloger.CreateFL(logName)
 	msghandler.RegisterHandler()
 
 	conn, err := ln.Accept()
@@ -59,7 +59,7 @@ func HandleConnection(conn net.Conn) {
 			fmt.Println(err)
 			return
 		} else {
-			fmt.Printf("handling msg: %d, len: %d\n", msgId, len(content))
+			//fmt.Printf("handling msg: %d, len: %d\n", msgId, len(content))
 		}
 
 		msghandler.HandleMsg(msgId, content, conn)

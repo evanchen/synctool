@@ -78,7 +78,7 @@ func Marshal(msgId uint16, itf Marshaller) []byte {
 	//msgId
 	tmp = protocol.Encode_uint16(msgId)
 	copy(total[2:], tmp)
-	fmt.Println(msgId, csz, tmp, total[:4])
+	//fmt.Println(msgId, csz, tmp, total[:4])
 
 	//content
 	copy(total[4:], buff)
