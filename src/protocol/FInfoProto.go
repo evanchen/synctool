@@ -1,4 +1,5 @@
-//This file is automatically created by protocol generator.
+//This file is automatically created by protocolGenerator.
+//https://github.com/evanchen/protocolGenerator
 //Any manual changes are not suggested.
 
 package protocol
