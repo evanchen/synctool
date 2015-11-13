@@ -2,16 +2,15 @@ synctool是一个用golang写的同步磁盘文件的小工具,支持局域网内文件同步.
 
 使用步骤:
 windows系统:
-	1.打开控制台,进入代码目录,分别运行 install.bat servmain 和 install.bat clientmain ,分别生
-	  成服务端(同步目标端)和客户端(同步源端)的可执行文件.
-	2.运行服务端: servmain.exe -port [监听端口].
-	3.运行客户端: clientmain.exe -ip [服务端ip] -port [端口] -cpath [本地文件夹绝对路径] -spath [目标端绝对路径] -ignore-dir [忽略本地文件夹名以';'隔开] -include [要同步的文件后缀以';'隔开,*.lua]
-		*注意*:ignore-dir参数是可选的,其余都是必须的.
-	4.因为覆盖文件没有提示反馈,在运行前,注意不要覆盖重要文件.
+1.打开控制台,进入代码目录,分别运行 install.bat servmain 和 install.bat clientmain ,分别生成服务端(同步目标端)和客户端(同步源端)的可执行文件.
+2.运行服务端: servmain.exe -port [监听端口].
+3.运行客户端: clientmain.exe -ip [服务端ip] -port [端口] -cpath [本地文件夹绝对路径] -spath [目标端绝对路径] -ignore-dir [忽略本地文件夹名以';'隔开] -include [要同步的文件后缀以';'隔开,*.lua]
+*注意*:ignore-dir参数是可选的,其余都是必须的.
+4.因为覆盖文件没有提示反馈,在运行前,注意不要覆盖重要文件.
 	
 linux系统:
-	以shell语法修改下install.sh.其余同上.
-	
+以shell语法修改下install.sh.其余同上.
+
 实现原理:
 比较源端和目标端中相同的文件的*修改时间*,以此决定是否要覆盖目标端的文件;当目标端不存在源端
 文件时,会创建该文件以及它的根目录.
