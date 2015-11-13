@@ -16,7 +16,6 @@ import (
 var NeedSrcFiles = make([]string, 0, 5)
 var ModTarFiles = make([]string, 0, 5)
 var CurFileIdx int
-var CurFileCache []byte
 var ClientMD5 = md5.New()
 var ServMD5 = md5.New()
 
@@ -30,7 +29,7 @@ func ReqFileInfo(Path string, Bpos uint32, conn net.Conn) {
 	obj.Bpos = Bpos
 	buff := Marshal(uint16(S2C_NEED_FILE_INFO), obj)
 
-	//gloger.GetLoger().Printf("ReqFileInfo: Path: %s,Bpos: %d, CurFileIdx: %d,len(CurFileCache): %d\n", Path, Bpos, CurFileIdx, len(CurFileCache))
+	//gloger.GetLoger().Printf("ReqFileInfo: Path: %s,Bpos: %d, CurFileIdx: %d\n", Path, Bpos, CurFileIdx)
 
 	_, err := conn.Write(buff)
 	if err != nil {
@@ -46,6 +45,20 @@ func c2s_finfo(msgId uint16, msg []byte, conn net.Conn) {
 	TarPath := fi.TarPath
 	ModTime := fi.ModTime
 
+	finfo, err := os.Stat(TarPath)
+	if err != nil || (uint64(finfo.ModTime().UnixNano()) < ModTime) {
+		if err != nil {
+			if os.IsNotExist(err) {
+				gloger.GetLoger().Printf("c2s_finfo: need to create file: %s\n", TarPath)
+			} else {
+				panic(err)
+			}
+		} else {
+			gloger.GetLoger().Printf("c2s_finfo: need to cover: %s\n", TarPath)
+		}
+		NeedSrcFiles = append(NeedSrcFiles, SrcPath)
+		ModTarFiles = append(ModTarFiles, TarPath)
+	}
 	if fi.TotalFileNum == TotalRecvPathNum {
 		if len(NeedSrcFiles) == 0 {
 			fmt.Println("all files updated")
@@ -53,25 +66,10 @@ func c2s_finfo(msgId uint16, msg []byte, conn net.Conn) {
 			os.Exit(0)
 		}
 		CurFileIdx = 0
-		//CurFileCache = make([]byte, 0, MAX_READ_SIZE)
 		Path := NeedSrcFiles[CurFileIdx]
 		ServMD5.Reset()
+
 		ReqFileInfo(Path, 0, conn)
-	} else {
-		finfo, err := os.Stat(TarPath)
-		if err != nil || (uint64(finfo.ModTime().UnixNano()) < ModTime) {
-			if err != nil {
-				if os.IsNotExist(err) {
-					gloger.GetLoger().Printf("c2s_finfo: need to create file: %s\n", TarPath)
-				} else {
-					panic(err)
-				}
-			} else {
-				gloger.GetLoger().Printf("c2s_finfo: need to cover: %s\n", TarPath)
-			}
-			NeedSrcFiles = append(NeedSrcFiles, SrcPath)
-			ModTarFiles = append(ModTarFiles, TarPath)
-		}
 	}
 }
 
@@ -82,7 +80,6 @@ func c2s_file_info_buff(msgId uint16, msg []byte, conn net.Conn) {
 	if CurPath != dataBuff.Path {
 		panic(fmt.Sprintf("CurPath: %s, sending path: %s", CurPath, dataBuff.Path))
 	}
-	//CurFileCache = append(CurFileCache, dataBuff.Buff...)
 	ServMD5.Write(dataBuff.Buff)
 	TarPath := ModTarFiles[CurFileIdx]
 	TmpModFile := TarPath + ".tmp"
@@ -98,7 +95,7 @@ func c2s_file_info_buff(msgId uint16, msg []byte, conn net.Conn) {
 	}
 	defer fh.Close()
 
-	//gloger.GetLoger().Printf("c2s_file_info_buff: writing file: %s, len: %d\n", TmpModFile, len(dataBuff.Buff))
+	gloger.GetLoger().Printf("c2s_file_info_buff: writing file: %s, len: %d\n", TmpModFile, len(dataBuff.Buff))
 
 	fh.Write(dataBuff.Buff)
 
@@ -185,8 +182,9 @@ func c2s_file_md5_info(msgId uint16, msg []byte, conn net.Conn) {
 		panic(fmt.Sprintf("file: %s md5 failed: serv_md5val: %s, client_md5val: %s", mobj.Path, serv_md5val, client_md5val))
 	}
 
+	OldIdx := CurFileIdx
 	//delete old file, rename .tmp file
-	TarFile := ModTarFiles[CurFileIdx]
+	TarFile := ModTarFiles[OldIdx]
 	var err = os.Remove(TarFile)
 	if err != nil {
 		if os.IsExist(err) {
@@ -203,7 +201,6 @@ func c2s_file_md5_info(msgId uint16, msg []byte, conn net.Conn) {
 	//write modified file to path
 	CurFileIdx++
 	if CurFileIdx < len(NeedSrcFiles) {
-		//CurFileCache = make([]byte, 0, MAX_READ_SIZE)
 		Path := NeedSrcFiles[CurFileIdx]
 
 		ReqFileInfo(Path, 0, conn)
